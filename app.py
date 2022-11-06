@@ -5,6 +5,7 @@ from firebase_admin import firestore
 from flask_cors import CORS
 
 ###initialize git
+#url https://ansoryapi.herokuapp.com/
 app = Flask(__name__)
 CORS(app)
 cred = credentials.Certificate('ansory-8dc38-firebase-adminsdk-2xtx8-de4e743e1b.json')
@@ -17,7 +18,7 @@ def login():
     data = request.form.to_dict(flat=False)
     val = doc_ref.where("username","==",data['username'][0]).where("pass","==",data['pass'][0]).get()
     if (len(val) == 1):
-        return {"data" : "sukses","nama":val[0].to_dict()['nama siswa'],"kelas":val[0].to_dict()['kelas'],"absen" :val[0].to_dict()['absen'],"nilai":val[0].to_dict()['nilai'],"username":val[0].to_dict()['username']}
+        return {"data" : "sukses","nama":val[0].to_dict()['nama siswa'],"kelas":val[0].to_dict()['kelas'],"absen" :val[0].to_dict()['absen'],"username":val[0].to_dict()['username']}
     else:
         return{"data":"password atau username salah"}
 
@@ -29,10 +30,9 @@ def getdatasiswa():
         nama = data[i].to_dict()['nama siswa']
         kelas = data[i].to_dict()['kelas']
         absen = data[i].to_dict()['absen']
-        nilai = data[i].to_dict()['nilai']
         username = data[i].to_dict()['username']
         ids = data[i].id
-        djson.append({"nama" : nama,'absen' : absen,'kelas' : kelas,'nilai' : nilai,"id":ids,"username":username})
+        djson.append({"nama" : nama,'absen' : absen,'kelas' : kelas,"id":ids,"username":username})
     return{"data":djson}
 
 @app.route("/register",methods=["POST"])
@@ -45,7 +45,6 @@ def register():
             'absen':data['absen'][0],
             'kelas':data['kelas'][0],
             'nama siswa':data['nama siswa'][0],
-            'nilai':data['nilai'][0],
             'pass':data['pass'][0],
             'username':data['username'][0],
         })
